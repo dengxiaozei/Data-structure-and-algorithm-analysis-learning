@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+int num = 0;
+void Move(char A, char C)
+{
+	cout << A << "移动到" << C << endl;
+	num++;
+}
+void hanota(int n, char A, char B, char C)
+{
+	if (n == 1){
+		Move(A, C);
+	}
+	else {
+		hanota(n - 1, A, C, B);
+		Move(A, C);
+		hanota(n - 1, B, A, C);
+	}
+}
+int main()
+{
+	hanota(10, 'A','B','C');
+	cout << num << endl;
+
+	return 0;
+}
