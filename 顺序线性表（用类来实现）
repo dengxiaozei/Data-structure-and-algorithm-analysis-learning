@@ -1,0 +1,85 @@
+#define MAXSIZE 100
+class Polynomial {
+public:
+	Polynomial() = default;//默认构造，因为在创建数组时，要求元素类型必须有默认构造
+	Polynomial(float& mp, int& me)//有参构造
+	{
+		this->p = mp;
+		this->e = me;
+	}
+	float p;//系数
+	int e;//指数
+};
+class Sqlist {
+public:
+	Sqlist()//默认构造，线性表的初始化，相当于Initlist
+	{
+		this->elem = new Polynomial[MAXSIZE];
+		if (!this->elem)
+		{
+			cerr << "error" << endl;
+		}
+		this->length = 0;
+	}
+	void ClearList()//清空顺序表
+	{
+		this->length = 0;
+	}
+	bool IsEmpty()//判断是否为空
+	{
+		return this->length == 0;
+	}
+	Polynomial& GetElem(int i)
+	{
+		if (i<1 || i>MAXSIZE)
+		{
+			cerr << "out of range" << endl;
+			return;
+		}
+		return this->elem[i - 1];
+	}
+	int LocateList(const Polynomial &m)//线性表的查找
+	{
+		for (int i = 0; i < this->length; i++)
+		{
+			if (this->elem[i].p == m.p && this->elem[i].e == m.e)
+				return i + 1;
+			else
+				return 0;
+		}
+	}
+	bool InsertList(const Polynomial &m,int i)// 插入，只能插入到1--n+1的位置
+	{
+		if (i<1 || i>this->length + 1||i==MAXSIZE) {
+			cerr << "插入失败！" << endl;
+			return 0;
+		}
+		else {
+			for (int j = this->length - 1; j >= i - 1; j--)//这里有点东西,从后面覆盖到前面来
+				this->elem[j + 1] = this->elem[j];
+			elem[i - 1] = m;
+			return 1;
+		}
+	}
+	bool EraseList(int i)//删除，i的范围为1--n
+	{
+		if (i<1 || i>this->length) {
+			cerr << "删除失败！" << endl;
+			return 0;
+		}
+		else {
+			for (int j = i - 1; j < this->length; j++)
+				this->elem[j] = this->elem[j + 1];
+			return 1;
+		}
+
+	}
+	~Sqlist()//析构函数释放堆区内存,相当于Destroylist
+	{
+		if (this->elem)
+			delete elem;
+	}
+private:
+	Polynomial* elem;
+	int length;
+};
